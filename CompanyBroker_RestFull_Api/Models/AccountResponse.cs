@@ -12,14 +12,16 @@ namespace CompanyBroker_RestFull_Api.Models
     public class AccountResponse
     {
         public int CompanyId { get; set; }
-        public int AccountId { get; set; }
         public string Username { get; set; }
+        public string Email { get; set; }
+        public bool Active { get; set; }
 
-        public AccountResponse(Account account)
+        public AccountResponse(CompanyAccount account)
         {
             CompanyId = account.CompanyId;
-            AccountId = account.Id;
+            Email = account.Email;
             Username = account.Username;
+            Active = account.Active;
         }
     }
 }

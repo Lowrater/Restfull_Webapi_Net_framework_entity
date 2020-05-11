@@ -13,10 +13,10 @@ namespace CompanyBroker.DBSData
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class CompanyBrokerAccountEntity : DbContext
+    public partial class CompanyBrokerResourcesEntities : DbContext
     {
-        public CompanyBrokerAccountEntity()
-            : base("name=CompanyBrokerAccountEntity")
+        public CompanyBrokerResourcesEntities()
+            : base("name=CompanyBrokerResourcesEntities")
         {
         }
     
@@ -25,6 +25,6 @@ namespace CompanyBroker.DBSData
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<CompanyResource> CompanyResources { get; set; }
     }
 }

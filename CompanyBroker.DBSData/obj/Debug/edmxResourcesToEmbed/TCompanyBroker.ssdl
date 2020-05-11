@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CompanyBrokerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Companies">
+    <Key>
+      <PropertyRef Name="CompanyId" />
+    </Key>
+    <Property Name="CompanyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CompanyName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="CompanyBalance" Type="money" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CompanyAccounts">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CompanyId" Type="int" Nullable="false" />
+    <Property Name="Username" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="320" Nullable="false" />
+    <Property Name="PasswordHash" Type="binary" MaxLength="32" Nullable="false" />
+    <Property Name="PasswordSalt" Type="binary" MaxLength="32" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CompanyResources">
+    <Key>
+      <PropertyRef Name="ResourceId" />
+    </Key>
+    <Property Name="ResourceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CompanyId" Type="int" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="ProductType" Type="nvarchar" MaxLength="100" />
+    <Property Name="Amount" Type="int" />
+    <Property Name="Price" Type="money" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__CompanyAc__Compa__3B75D760">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="CompanyAccounts" Type="Self.CompanyAccounts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="CompanyAccounts">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CompanyRe__Compa__3F466844">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="CompanyResources" Type="Self.CompanyResources" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="CompanyResources">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CompanyBrokerModelStoreContainer">
+    <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CompanyAccounts" EntityType="Self.CompanyAccounts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CompanyResources" EntityType="Self.CompanyResources" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__CompanyAc__Compa__3B75D760" Association="Self.FK__CompanyAc__Compa__3B75D760">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="CompanyAccounts" EntitySet="CompanyAccounts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CompanyRe__Compa__3F466844" Association="Self.FK__CompanyRe__Compa__3F466844">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="CompanyResources" EntitySet="CompanyResources" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -5,57 +5,57 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="CompanyBrokerAccountModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Accounts">
+        <EntityType Name="CompanyAccounts">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Username" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CompanyId" Type="int" Nullable="false" />
-          <Property Name="PasswordHash" Type="binary" MaxLength="32" />
-          <Property Name="PasswordSalt" Type="binary" MaxLength="32" />
+          <Property Name="Username" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="320" Nullable="false" />
+          <Property Name="PasswordHash" Type="binary" MaxLength="32" Nullable="false" />
+          <Property Name="PasswordSalt" Type="binary" MaxLength="32" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="Email" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityContainer Name="CompanyBrokerAccountModelStoreContainer">
-          <EntitySet Name="Accounts" EntityType="Self.Accounts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompanyAccounts" EntityType="Self.CompanyAccounts" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CompanyBrokerAccountModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Account">
+        <EntityType Name="CompanyAccount">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CompanyId" Type="Int32" Nullable="false" />
-          <Property Name="PasswordHash" Type="Binary" MaxLength="32" FixedLength="true" />
-          <Property Name="PasswordSalt" Type="Binary" MaxLength="32" FixedLength="true" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="320" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PasswordHash" Type="Binary" MaxLength="32" FixedLength="true" Nullable="false" />
+          <Property Name="PasswordSalt" Type="Binary" MaxLength="32" FixedLength="true" Nullable="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityContainer Name="CompanyBrokerAccountEntity" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Accounts" EntityType="Self.Account" />
+        <EntityContainer Name="CompanyBrokerAccountEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CompanyAccounts" EntityType="Self.CompanyAccount" />
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="CompanyBrokerAccountModelStoreContainer" CdmEntityContainer="CompanyBrokerAccountEntity">
-          <EntitySetMapping Name="Accounts">
-            <EntityTypeMapping TypeName="CompanyBrokerAccountModel.Account">
-              <MappingFragment StoreEntitySet="Accounts">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
+        <EntityContainerMapping StorageEntityContainer="CompanyBrokerAccountModelStoreContainer" CdmEntityContainer="CompanyBrokerAccountEntities">
+          <EntitySetMapping Name="CompanyAccounts">
+            <EntityTypeMapping TypeName="CompanyBrokerAccountModel.CompanyAccount">
+              <MappingFragment StoreEntitySet="CompanyAccounts">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
                 <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

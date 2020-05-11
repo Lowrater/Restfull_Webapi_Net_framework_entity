@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CompanyBrokerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Company">
+    <Key>
+      <PropertyRef Name="CompanyId" />
+    </Key>
+    <Property Name="CompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CompanyName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CompanyBalance" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="CompanyAccounts" Relationship="Self.FK__CompanyAc__Compa__3B75D760" FromRole="Companies" ToRole="CompanyAccounts" />
+    <NavigationProperty Name="CompanyResources" Relationship="Self.FK__CompanyRe__Compa__3F466844" FromRole="Companies" ToRole="CompanyResources" />
+  </EntityType>
+  <EntityType Name="CompanyAccount">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CompanyId" Type="Int32" Nullable="false" />
+    <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="320" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PasswordHash" Type="Binary" MaxLength="32" FixedLength="true" Nullable="false" />
+    <Property Name="PasswordSalt" Type="Binary" MaxLength="32" FixedLength="true" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Company" Relationship="Self.FK__CompanyAc__Compa__3B75D760" FromRole="CompanyAccounts" ToRole="Companies" />
+  </EntityType>
+  <EntityType Name="CompanyResource">
+    <Key>
+      <PropertyRef Name="ResourceId" />
+    </Key>
+    <Property Name="ResourceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CompanyId" Type="Int32" Nullable="false" />
+    <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProductType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Amount" Type="Int32" />
+    <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Company" Relationship="Self.FK__CompanyRe__Compa__3F466844" FromRole="CompanyResources" ToRole="Companies" />
+  </EntityType>
+  <Association Name="FK__CompanyAc__Compa__3B75D760">
+    <End Role="Companies" Type="Self.Company" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="CompanyAccounts" Type="Self.CompanyAccount" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="CompanyAccounts">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CompanyRe__Compa__3F466844">
+    <End Role="Companies" Type="Self.Company" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="CompanyResources" Type="Self.CompanyResource" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="CompanyResources">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CompanyBrokerEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Companies" EntityType="Self.Company" />
+    <EntitySet Name="CompanyAccounts" EntityType="Self.CompanyAccount" />
+    <EntitySet Name="CompanyResources" EntityType="Self.CompanyResource" />
+    <AssociationSet Name="FK__CompanyAc__Compa__3B75D760" Association="Self.FK__CompanyAc__Compa__3B75D760">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="CompanyAccounts" EntitySet="CompanyAccounts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CompanyRe__Compa__3F466844" Association="Self.FK__CompanyRe__Compa__3F466844">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="CompanyResources" EntitySet="CompanyResources" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

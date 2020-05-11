@@ -51,7 +51,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
             using (var entitys = new CompanyBrokerCompaniesEntities())
             {
                 //-- Fetches an company based on the Id user has entered
-                var company = await entitys.Companies.FirstOrDefaultAsync(c => c.Id == id);
+                var company = await entitys.Companies.FirstOrDefaultAsync(c => c.CompanyId == id);
                 //-- creates the new companyResponse based on the information fetched
                 companyResponse = new CompanyResponse(company);
             }

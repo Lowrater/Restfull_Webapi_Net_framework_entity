@@ -22,12 +22,12 @@ namespace CompanyBroker_RestFull_Api.Controllers
             //-- Creates an list type of accountResponse
             var accountList = new List<AccountResponse>();
             //-- Uses the CompanyBrokeraccountEntity to access the database
-            using (var entitys = new CompanyBrokerAccountEntity())
+            using (var entitys = new CompanyBrokerAccountEntities())
             {
                 //-- Fetches the account list
-                var info = await entitys.Accounts.ToListAsync();
+                var responseData = await entitys.CompanyAccounts.ToListAsync();
                 //-- Fetches all account
-                foreach (Account account in info)
+                foreach (CompanyAccount account in responseData)
                 {
                     //-- Adds all the accounts, throgh the accountResponse to remove sensitive data
                     accountList.Add(new AccountResponse(account));
@@ -49,12 +49,12 @@ namespace CompanyBroker_RestFull_Api.Controllers
             //-- sets an accountResponse
             AccountResponse accountResponse;
             //-- Uses the CompanyBrokeraccountEntity to access the database
-            using (var entitys = new CompanyBrokerAccountEntity())
+            using (var entitys = new CompanyBrokerAccountEntities())
             {
                 //-- fetches the account based on the ID the users has requested
-                var info = await entitys.Accounts.FirstOrDefaultAsync(c => c.Id == id);
+                var responseData = await entitys.CompanyAccounts.FirstOrDefaultAsync(c => c.UserId == id);
                 //-- Creates a new accountResponse and parsing the information to remove sensitive data
-                accountResponse = new AccountResponse(info);
+                accountResponse = new AccountResponse(responseData);
             }
             //-- Returns the response
             return accountResponse;

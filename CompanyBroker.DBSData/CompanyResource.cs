@@ -12,14 +12,14 @@ namespace CompanyBroker.DBSData
     using System;
     using System.Collections.Generic;
     
-    public partial class Account
+    public partial class CompanyResource
     {
-        public int Id { get; set; }
-        public string Username { get; set; }
+        public int ResourceId { get; set; }
         public int CompanyId { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
+        public string ProductName { get; set; }
+        public string ProductType { get; set; }
+        public Nullable<int> Amount { get; set; }
+        public Nullable<decimal> Price { get; set; }
         public bool Active { get; set; }
-        public string Email { get; set; }
     }
 }

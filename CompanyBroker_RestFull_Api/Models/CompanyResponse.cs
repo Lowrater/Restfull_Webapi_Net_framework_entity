@@ -14,8 +14,8 @@ namespace CompanyBroker_RestFull_Api.Models
 
         public CompanyResponse(Company company)
         {
-            Id = company.Id;
-            Name = company.Name;
+            Id = company.CompanyId;
+            Name = company.CompanyName;
             Active = company.Active;
         }
     }

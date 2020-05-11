@@ -50,59 +50,84 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account.cs">
-      <DependentUpon>AccountModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AccountModel.Context.cs">
+    <Compile Include="CompaniesModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AccountModel.Context.tt</DependentUpon>
+      <DependentUpon>CompaniesModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="AccountModel.cs">
+    <Compile Include="CompaniesModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AccountModel.tt</DependentUpon>
+      <DependentUpon>CompaniesModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="AccountModel.Designer.cs">
+    <Compile Include="CompaniesModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AccountModel.edmx</DependentUpon>
+      <DependentUpon>CompaniesModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Company.cs">
-      <DependentUpon>CompanyModel.tt</DependentUpon>
+      <DependentUpon>CompaniesModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="CompanyModel.Context.cs">
+    <Compile Include="CompanyAccount.cs">
+      <DependentUpon>CompanyAccountModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyAccountModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CompanyModel.Context.tt</DependentUpon>
+      <DependentUpon>CompanyAccountModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="CompanyModel.cs">
+    <Compile Include="CompanyAccountModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CompanyModel.tt</DependentUpon>
+      <DependentUpon>CompanyAccountModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="CompanyModel.Designer.cs">
+    <Compile Include="CompanyAccountModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CompanyModel.edmx</DependentUpon>
+      <DependentUpon>CompanyAccountModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyResource.cs">
+      <DependentUpon>CompanyResourcesModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyResourcesModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompanyResourcesModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyResourcesModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompanyResourcesModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyResourcesModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompanyResourcesModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="AccountModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AccountModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="AccountModel.edmx.diagram">
-      <DependentUpon>AccountModel.edmx</DependentUpon>
-    </None>
     <None Include="App.Config" />
-    <EntityDeploy Include="CompanyModel.edmx">
+    <EntityDeploy Include="CompanyAccountModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CompanyModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>CompanyAccountModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="CompanyModel.edmx.diagram">
-      <DependentUpon>CompanyModel.edmx</DependentUpon>
+    <EntityDeploy Include="CompaniesModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CompaniesModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="CompaniesModel.edmx.diagram">
+      <DependentUpon>CompaniesModel.edmx</DependentUpon>
+    </None>
+    <None Include="CompanyAccountModel.edmx.diagram">
+      <DependentUpon>CompanyAccountModel.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="CompanyResourcesModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CompanyResourcesModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="CompanyResourcesModel.edmx.diagram">
+      <DependentUpon>CompanyResourcesModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -110,25 +135,35 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AccountModel.Context.tt">
+    <Content Include="CompaniesModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AccountModel.edmx</DependentUpon>
-      <LastGenOutput>AccountModel.Context.cs</LastGenOutput>
+      <DependentUpon>CompaniesModel.edmx</DependentUpon>
+      <LastGenOutput>CompaniesModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="AccountModel.tt">
+    <Content Include="CompaniesModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AccountModel.edmx</DependentUpon>
-      <LastGenOutput>AccountModel.cs</LastGenOutput>
+      <DependentUpon>CompaniesModel.edmx</DependentUpon>
+      <LastGenOutput>CompaniesModel.cs</LastGenOutput>
     </Content>
-    <Content Include="CompanyModel.Context.tt">
+    <Content Include="CompanyAccountModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CompanyModel.edmx</DependentUpon>
-      <LastGenOutput>CompanyModel.Context.cs</LastGenOutput>
+      <DependentUpon>CompanyAccountModel.edmx</DependentUpon>
+      <LastGenOutput>CompanyAccountModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="CompanyModel.tt">
+    <Content Include="CompanyAccountModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CompanyModel.edmx</DependentUpon>
-      <LastGenOutput>CompanyModel.cs</LastGenOutput>
+      <DependentUpon>CompanyAccountModel.edmx</DependentUpon>
+      <LastGenOutput>CompanyAccountModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="CompanyResourcesModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CompanyResourcesModel.edmx</DependentUpon>
+      <LastGenOutput>CompanyResourcesModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="CompanyResourcesModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CompanyResourcesModel.edmx</DependentUpon>
+      <LastGenOutput>CompanyResourcesModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
