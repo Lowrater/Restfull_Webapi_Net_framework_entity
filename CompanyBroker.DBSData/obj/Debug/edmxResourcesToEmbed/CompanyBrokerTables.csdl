@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CompanyBrokerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Account">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CompanyId" Type="Int32" Nullable="false" />
+    <Property Name="PasswordHash" Type="Binary" MaxLength="32" FixedLength="true" />
+    <Property Name="PasswordSalt" Type="Binary" MaxLength="32" FixedLength="true" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Company" Relationship="Self.FK_Accounts_Companies_CompanyId" FromRole="Accounts" ToRole="Companies" />
+  </EntityType>
+  <EntityType Name="Company">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Balance" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Accounts" Relationship="Self.FK_Accounts_Companies_CompanyId" FromRole="Companies" ToRole="Accounts" />
+  </EntityType>
+  <Association Name="FK_Accounts_Companies_CompanyId">
+    <End Role="Companies" Type="Self.Company" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Accounts" Type="Self.Account" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Accounts">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CompanyBrokerTableData" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Accounts" EntityType="Self.Account" />
+    <EntitySet Name="Companies" EntityType="Self.Company" />
+    <AssociationSet Name="FK_Accounts_Companies_CompanyId" Association="Self.FK_Accounts_Companies_CompanyId">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="Accounts" EntitySet="Accounts" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

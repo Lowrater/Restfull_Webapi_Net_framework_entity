@@ -1,0 +1,21 @@
+C:\Users\PC\source\repos\CompanyBroker_RestFull_Api\CompanyBroker.DBSData\bin\Debug\CompanyBroker.DBSData.dll.config
+C:\Users\PC\source\repos\CompanyBroker_RestFull_Api\CompanyBroker.DBSData\bin\Debug\CompanyBroker.DBSData.dll
+C:\Users\PC\source\repos\CompanyBroker_RestFull_Api\CompanyBroker.DBSData\bin\Debug\CompanyBroker.DBSData.pdb
+C:\Users\PC\source\repos\CompanyBroker_RestFull_Api\CompanyBroker.DBSData\bin\Debug\EntityFramework.dll
+C:\Users\PC\source\repos\CompanyBroker_RestFull_Api\CompanyBroker.DBSData\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\PC\source\repos\CompanyBroker_RestFull_Api\CompanyBroker.DBSData\bin\Debug\EntityFramework.xml
+C:\Users\PC\source\repos\CompanyBroker_RestFull_Api\CompanyBroker.DBSData\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\PC\source\repos\CompanyBroker_RestFull_Api\CompanyBroker.DBSData\obj\Debug\CompanyBroker.DBSData.csproj.CopyComplete
+C:\Users\PC\source\repos\CompanyBroker_RestFull_Api\CompanyBroker.DBSData\obj\Debug\CompanyBroker.DBSData.dll
+C:\Users\PC\source\repos\CompanyBroker_RestFull_Api\CompanyBroker.DBSData\obj\Debug\CompanyBroker.DBSData.pdb
+C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker.DBSData\bin\Debug\CompanyBroker.DBSData.dll.config
+C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker.DBSData\bin\Debug\CompanyBroker.DBSData.dll
+C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker.DBSData\bin\Debug\CompanyBroker.DBSData.pdb
+C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker.DBSData\bin\Debug\EntityFramework.dll
+C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker.DBSData\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker.DBSData\bin\Debug\EntityFramework.xml
+C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker.DBSData\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker.DBSData\obj\Debug\CompanyBroker.DBSData.csprojAssemblyReference.cache
+C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker.DBSData\obj\Debug\CompanyBroker.DBSData.csproj.CopyComplete
+C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker.DBSData\obj\Debug\CompanyBroker.DBSData.dll
+C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker.DBSData\obj\Debug\CompanyBroker.DBSData.pdb
