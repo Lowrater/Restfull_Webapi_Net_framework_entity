@@ -58,5 +58,65 @@ namespace CompanyBroker_RestFull_Api.Controllers
             //-- Returns the results
             return companyResponse;
         }
+
+        /// <summary>
+        /// Returns an company based on a ID number
+        /// </summary>
+        /// <param name="companyName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<CompanyResponse> Get(string companyName)
+        {
+            //-- sets an CompanyResponse
+            CompanyResponse companyResponse;
+            //-- Uses the CompanyBrokerCompaniesEntities to connect to the database
+            using (var entitys = new CompanyBrokerCompaniesEntities())
+            {
+                //-- Fetches an company based on the Id user has entered
+                var company = await entitys.Companies.FirstOrDefaultAsync(c => c.CompanyName == companyName);
+                //-- creates the new companyResponse based on the information fetched
+                companyResponse = new CompanyResponse(company);
+            }
+            //-- Returns the results
+            return companyResponse;
+        }
+
+        /// <summary>
+        /// Creates an company
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/CreateCompany")]
+        [HttpPost]
+        public async Task<bool> CreateCompany(CreateCompanyRequest createCompanyRequest)
+        {
+            //-- the result wheter or not the creation was successfull
+            bool resultProcess = false;
+
+            //-- checks if the company request is null
+            if(createCompanyRequest != null)
+            {
+                //-- new instance of a Company
+                var company = new Company()
+                {
+                    CompanyName = createCompanyRequest.CompanyName,
+                    CompanyBalance = 0,
+                    Active = true
+                };
+
+                //-- Connecting to the database using the CompaniesEntities
+                using (var entitys = new CompanyBrokerCompaniesEntities())
+                {
+                    //-- adds a new company to the Companies table
+                    entitys.Companies.Add(company);
+                    //-- Saves the changes to the database
+                    await entitys.SaveChangesAsync();
+                    //-- Sets the result process to true
+                    resultProcess = true;
+                }
+            }
+            //-- returns the result
+            return resultProcess;
+        }
+             
     }
 }
