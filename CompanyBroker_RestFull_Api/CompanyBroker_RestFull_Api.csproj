@@ -195,7 +195,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountResponse.cs" />
-    <Compile Include="Models\CollectionlistRequest.cs" />
+    <Compile Include="Models\CollectionFilterRequest.cs" />
     <Compile Include="Models\CompanyResponse.cs" />
     <Compile Include="Models\CreateAccountRequest.cs" />
     <Compile Include="Models\CreateCompanyRequest.cs" />

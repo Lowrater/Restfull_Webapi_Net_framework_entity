@@ -6,10 +6,12 @@ using System.Web;
 
 namespace CompanyBroker_RestFull_Api.Models
 {
-    public class CollectionlistRequest
+    public class CollectionFilterRequest
     {
         public IEnumerable<string> CompanyChoices { get; set; }
         public IEnumerable<string> ProductTypeChoices { get; set; }
         public IEnumerable<string> ProductNameChoices { get; set; }
+        public string SearchWord { get; set; }
+
     }
 }
