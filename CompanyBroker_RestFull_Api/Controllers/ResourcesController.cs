@@ -4,6 +4,7 @@ using CompanyBroker_RestFull_Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -19,7 +20,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IEnumerable<CompanyResource>> Get()
+        public async Task<IList<CompanyResource>> Get()
         {
             //-- Uses the CompanyBrokeraccountEntity to access the database
             using (var entitys = new CompanyBrokerResourcesEntities())
@@ -35,7 +36,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
         /// <returns></returns>
         [Route("api/GetResourcesByCompanyId")]
         [HttpGet]
-        public async Task<IEnumerable<CompanyResource>> GetResourcesByCompanyId(int companyId)
+        public async Task<IList<CompanyResource>> GetResourcesByCompanyId(int companyId)
         {
             //-- Uses the CompanyBrokeraccountEntity to access the database
             using (var entitys = new CompanyBrokerResourcesEntities())
@@ -45,55 +46,55 @@ namespace CompanyBroker_RestFull_Api.Controllers
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="collectionFilterRequest"></param>
+        /// <returns></returns>
         [Route("api/GetResourcesByListFilters")]
         [HttpPost]
-        public async Task<IEnumerable<CompanyResource>> GetResourcesByListFilters(CollectionFilterRequest collectionFilterRequest)
+        public async Task<IList<CompanyResource>> GetResourcesByListFilters(CollectionFilterRequest collectionFilterRequest)
         {
             //-- The new resource list
             var resourceList = new List<CompanyResource>();
+            var productNames = collectionFilterRequest.ProductNameChoices.ToArray();
+            var productTypes = collectionFilterRequest.ProductTypeChoices.ToArray();
+            var companyIds = collectionFilterRequest.CompanyChoices.Select(c => int.Parse(c.Split(' ')[0])).ToArray();
+            var searchWords = collectionFilterRequest.SearchWord.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             //-- Uses the CompanyBrokeraccountEntity to access the database
             using (var entitys = new CompanyBrokerResourcesEntities())
-            {              
-                resourceList = await entitys.CompanyResources.ToListAsync();
-            }
-
-            //-- Filtering the list depending on the inputs from the collectionListRequest
-            if (collectionFilterRequest.ProductNameChoices.Count() != 0)
             {
-                resourceList = resourceList.Where(r => collectionFilterRequest.ProductNameChoices.Any(pn => pn == r.ProductName)).ToList();
-            }
+                var results = entitys.CompanyResources.AsQueryable();
 
-            if (collectionFilterRequest.ProductTypeChoices.Count() != 0)
-            {
-                resourceList = resourceList.Where(r => collectionFilterRequest.ProductTypeChoices.Any(pt => pt == r.ProductType)).ToList();
-            }
+                //-- Filtering the list depending on the inputs from the collectionListRequest
+                if (productNames.Any())
+                    results = results.Where(r => productNames.Contains(r.ProductName));
 
-            if(collectionFilterRequest.CompanyChoices.Count() != 0)
-            {
-                resourceList = resourceList.Where(r => collectionFilterRequest.CompanyChoices.Any(cc => cc.Substring(0,1).ConvertToInt() == r.CompanyId)).ToList();
-            };
+                if (productTypes.Any())
+                    results = results.Where(r => productTypes.Contains(r.ProductType));
 
-            //-- word filtering
-            if(!string.IsNullOrEmpty(collectionFilterRequest.SearchWord))
-            {
-                resourceList = resourceList.Where(r => r.ProductName.ToLower().Contains(collectionFilterRequest.SearchWord.ToLower()) || r.ProductType.ToLower().Contains(collectionFilterRequest.SearchWord.ToLower())).ToList();
+                if (companyIds.Any())
+                    results = results.Where(r => companyIds.Contains(r.CompanyId));
+
+                //-- word filtering
+                if (searchWords.Any())
+                    results = results.Where(r => searchWords.Any(s => r.ProductName.Contains(s) || r.ProductType.Contains(s)));
+
+                resourceList = await results.ToListAsync();
             }
 
             //-- return the filtered list
             return resourceList;
         }
 
-
-
         /// <summary>
         /// Fetches all resources based by multiple CompanyId
         /// </summary>
         /// <returns></returns>
         [Route("api/GetResourcesByCompanyIds")]
-        [HttpPost]
-        public async Task<IEnumerable<CompanyResource>> GetResourcesByCompanyId(IEnumerable<int> companyId)
+        [HttpGet]
+        public async Task<IList<CompanyResource>> GetResourcesByCompanyId(IEnumerable<int> companyId)
         {
             var resourceList = new List<CompanyResource>();
             //-- Uses the CompanyBrokeraccountEntity to access the database
@@ -112,7 +113,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
         /// <param name="searchWord"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IEnumerable<CompanyResource>> Get(string searchWord)
+        public async Task<IList<CompanyResource>> Get(string searchWord)
         {
             //-- The new resourceList
             var resourceList = new List<CompanyResource>();
@@ -152,7 +153,6 @@ namespace CompanyBroker_RestFull_Api.Controllers
             }
         }
 
-
         /// <summary>
         /// Fetches all product types from a list
         /// </summary>
@@ -160,29 +160,12 @@ namespace CompanyBroker_RestFull_Api.Controllers
         /// <returns></returns>
         [Route("api/GetProductAllTypes")]
         [HttpGet]
-        public async Task<IEnumerable<string>> GetProductAllTypes()
+        public Task<List<string>> GetProductAllTypesAsync()
         {
-            //-- creates a new list
-            var list = new List<string>();
-            //-- opens an connection to the database
+            ////-- opens an connection to the database
             using (var entitys = new CompanyBrokerResourcesEntities())
-            {
-                //-- fetches all resources
-                var responseList = await entitys.CompanyResources.ToListAsync();
-
-                //-- loops the content
-                foreach (var product in responseList)
-                {
-                    //-- Checks if the list contains the product
-                    if(!list.Contains(product.ProductType))
-                    {
-                        //-- adds the product type
-                        list.Add(product.ProductType);
-                    }
-                }
-            }
-            //-- returns the list
-            return list;
+                //-- fetches all resources, for product types only, and only want one of each.
+                return entitys.CompanyResources.Select(pt => pt.ProductType).Distinct().ToListAsync();
         }
 
         /// <summary>
@@ -191,29 +174,18 @@ namespace CompanyBroker_RestFull_Api.Controllers
         /// <param name="productname"></param>
         /// <returns></returns>
         [Route("api/GetAllProductNamesByTypes")]
-        [HttpPost]
-        public async Task<IEnumerable<string>> GetAllProductNamesByTypes(IEnumerable<string> productTypes)
+        [HttpGet]
+        public async Task<IList<string>> GetAllProductNamesByTypes(IEnumerable<string> productTypes)
         {
             //-- creates a new list
-            var list = new List<string>();
+            var resourceList = new List<string>();
             //-- connecting to the database 
             using (var entitys = new CompanyBrokerResourcesEntities())
             {
-                //-- loops the recieved result list
-                foreach (string type in productTypes)
-                {
-                    //-- loops fetches all products based on the type
-                    var responseList = await entitys.CompanyResources.Where(p => p.ProductType == type).ToListAsync();
-                    //-- loops the responseList for products based on the type
-                    foreach (var product in responseList)
-                    {
-                        //-- adds it to the list
-                        list.Add(product.ProductName);
-                    }
-                }
+                resourceList = await entitys.CompanyResources.Where(p => productTypes.Any(t => t == p.ProductType)).Select(x => x.ProductName).ToListAsync();
             }
             //-- returns the list
-            return list;
+            return resourceList;
         }
     }
 }

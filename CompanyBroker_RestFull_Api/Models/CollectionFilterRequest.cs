@@ -13,5 +13,5 @@ namespace CompanyBroker_RestFull_Api.Models
         public IEnumerable<string> ProductNameChoices { get; set; }
         public string SearchWord { get; set; }
 
-    }
+   }
 }

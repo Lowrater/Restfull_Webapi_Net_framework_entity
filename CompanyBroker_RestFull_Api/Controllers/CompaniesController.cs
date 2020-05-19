@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Linq;
 
 namespace CompanyBroker_RestFull_Api.Controllers
 {
@@ -17,14 +18,14 @@ namespace CompanyBroker_RestFull_Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IEnumerable<CompanyResponse>> Get()
+        public async Task<IList<CompanyResponse>> Get()
         {
             //-- Creates new list with content of CompanyResponse
             var companyList = new List<CompanyResponse>();
             //-- Uses the CompanyBrokerCompaniesEntities to connect to the database
             using (var entitys = new CompanyBrokerCompaniesEntities())
             {
-                //-- Fetches all companies 
+                //-- Fetches all companies                
                 var companies = await entitys.Companies.ToListAsync();
                 //-- Loops the results
                 foreach (Company company in companies)

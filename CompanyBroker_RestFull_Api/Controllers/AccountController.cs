@@ -64,7 +64,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IEnumerable<AccountResponse>> Get()
+        public async Task<IList<AccountResponse>> Get()
         {
             //-- Creates an list type of accountResponse
             var accountList = new List<AccountResponse>();
