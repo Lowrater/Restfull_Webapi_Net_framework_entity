@@ -57,12 +57,12 @@ namespace CompanyBroker_RestFull_Api.Controllers
         {
             //-- The new resource list
             var resourceList = new List<CompanyResource>();
-            var productNames = collectionFilterRequest.ProductNameChoices.ToArray();
-            var productTypes = collectionFilterRequest.ProductTypeChoices.ToArray();
-            //-- Parses first element to int, - Needs to be adjusted so the list only is an collection of Int.
-            var companyIds = collectionFilterRequest.CompanyChoices.Select(c => int.Parse(c.Split(' ')[0])).ToArray();
+            //-- Values from the CollectionFilterRequest
+            var productNames = collectionFilterRequest.ProductNameChoices;
+            var productTypes = collectionFilterRequest.ProductTypeChoices;
+            var companyIds = collectionFilterRequest.CompanyChoices;
             //-- Splitting the word by spaces, into array for propper filtering
-            var searchWords = collectionFilterRequest.SearchWord.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var searchWords = collectionFilterRequest.SearchWord is null ? collectionFilterRequest.SearchWord.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries) : null; 
 
             //-- Uses the CompanyBrokeraccountEntity to access the database
             using (var entitys = new CompanyBrokerResourcesEntities())
@@ -161,13 +161,13 @@ namespace CompanyBroker_RestFull_Api.Controllers
         /// <returns></returns>
         [Route("api/GetProductAllTypes")]
         [HttpGet]
-        public Task<List<string>> GetProductAllTypesAsync()
+        public async Task<List<string>> GetProductAllTypesAsync()
         {
             ////-- opens an connection to the database
             using (var entitys = new CompanyBrokerResourcesEntities())
             {
                 //-- fetches all resources, for product types only, and only want one of each.
-                return entitys.CompanyResources.Select(pt => pt.ProductType).Distinct().ToListAsync();
+                return await entitys.CompanyResources.Select(pt => pt.ProductType).Distinct().ToListAsync();
             }
         }
 

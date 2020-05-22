@@ -66,22 +66,12 @@ namespace CompanyBroker_RestFull_Api.Controllers
         [HttpGet]
         public async Task<IList<AccountResponse>> Get()
         {
-            //-- Creates an list type of accountResponse
-            var accountList = new List<AccountResponse>();
             //-- Uses the CompanyBrokeraccountEntity to access the database
             using (var entitys = new CompanyBrokerAccountEntities())
             {
                 //-- Fetches the account list
-                var responseData = await entitys.CompanyAccounts.ToListAsync();
-                //-- Fetches all account
-                foreach (CompanyAccount account in responseData)
-                {
-                    //-- Adds all the accounts, throgh the accountResponse to remove sensitive data
-                    accountList.Add(new AccountResponse(account));
-                }
+                return (await entitys.CompanyAccounts.ToListAsync()).Select(a => new AccountResponse(a)).ToList();
             }
-            //-- returns the list
-            return accountList;
         }
 
 
