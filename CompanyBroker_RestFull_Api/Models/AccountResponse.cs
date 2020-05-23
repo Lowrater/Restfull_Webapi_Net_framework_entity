@@ -11,6 +11,7 @@ namespace CompanyBroker_RestFull_Api.Models
     /// </summary>
     public class AccountResponse
     {
+        public int UserId { get; set; }
         public int CompanyId { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
@@ -22,6 +23,7 @@ namespace CompanyBroker_RestFull_Api.Models
             Email = account.Email;
             Username = account.Username;
             Active = account.Active;
+            UserId = account.UserId;
         }
     }
 }

@@ -47,7 +47,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Fetches all resources based on filters
         /// </summary>
         /// <param name="collectionFilterRequest"></param>
         /// <returns></returns>
@@ -61,12 +61,16 @@ namespace CompanyBroker_RestFull_Api.Controllers
             var productNames = collectionFilterRequest.ProductNameChoices;
             var productTypes = collectionFilterRequest.ProductTypeChoices;
             var companyIds = collectionFilterRequest.CompanyChoices;
-            //-- Splitting the word by spaces, into array for propper filtering
-            var searchWords = collectionFilterRequest.SearchWord is null ? collectionFilterRequest.SearchWord.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries) : null; 
+            var searchWords = collectionFilterRequest.SearchWord;
+            var LowestPrice = collectionFilterRequest.LowestPriceChoice;
+            var HigestPirce = collectionFilterRequest.HigestPriceChoice;
+            var BulkBuy = collectionFilterRequest.BulkChoice;
+            var PartnersOnly = collectionFilterRequest.Partners_OnlyChoice;
 
             //-- Uses the CompanyBrokeraccountEntity to access the database
             using (var entitys = new CompanyBrokerResourcesEntities())
             {
+                //-- Fetching the results. - As queryAble, lets the database struggle with the filtering than the application
                 var results = entitys.CompanyResources.AsQueryable();
 
                 //-- Filtering the list depending on the inputs from the collectionListRequest, and checking if they have any value
@@ -85,10 +89,23 @@ namespace CompanyBroker_RestFull_Api.Controllers
                     results = results.Where(r => companyIds.Contains(r.CompanyId));
                 }
 
-                //-- word filtering
-                if (searchWords.Any())
+                if (LowestPrice != 0)
                 {
-                    results = results.Where(r => searchWords.Any(s => r.ProductName.Contains(s) || r.ProductType.Contains(s)));
+                    results = results.Where(r => LowestPrice < r.Price);
+                }
+
+                if (HigestPirce != 0)
+                {
+                    results = results.Where(r => HigestPirce > r.Price);
+                }
+
+                //-- word filtering
+                if (!string.IsNullOrWhiteSpace(searchWords))
+                {
+                    //-- Splitting the word by spaces, into array for propper filtering
+                    var Words = searchWords.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    //-- Filtering the results based on the array of words
+                    results = results.Where(r => Words.Any(s => r.ProductName.ToLower().Contains(s) || r.ProductType.ToLower().Contains(s)));
                 }
 
                 resourceList = await results.ToListAsync();
@@ -177,7 +194,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
         /// <param name="productname"></param>
         /// <returns></returns>
         [Route("api/GetAllProductNamesByTypes")]
-        [HttpGet]
+        [HttpPost]
         public async Task<IList<string>> GetAllProductNamesByTypes(IEnumerable<string> productTypes)
         {
             //-- connecting to the database 

@@ -97,6 +97,28 @@ namespace CompanyBroker_RestFull_Api.Controllers
             return accountResponse;
         }
 
+        /// <summary>
+        /// Fetches one account based on a ID number, and returns through an model to not contain sensitive data like passwords
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<AccountResponse> Get(string userName)
+        {
+            //-- sets an accountResponse
+            AccountResponse accountResponse;
+            //-- Uses the CompanyBrokeraccountEntity to access the database
+            using (var entitys = new CompanyBrokerAccountEntities())
+            {
+                //-- fetches the account based on the ID the users has requested
+                var responseData = await entitys.CompanyAccounts.FirstOrDefaultAsync(c => c.Username == userName);
+                //-- Creates a new accountResponse and parsing the information to remove sensitive data
+                accountResponse = new AccountResponse(responseData);
+            }
+            //-- Returns the response
+            return accountResponse;
+        }
+
 
         /// <summary>
         /// Creates an account from the content recieved from the user / application, to an existing company
