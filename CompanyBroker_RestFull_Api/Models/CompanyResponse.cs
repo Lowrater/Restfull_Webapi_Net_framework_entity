@@ -11,12 +11,14 @@ namespace CompanyBroker_RestFull_Api.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public bool Active { get; set; }
+        public decimal Balance { get; set; }
 
         public CompanyResponse(Company company)
         {
             Id = company.CompanyId;
             Name = company.CompanyName;
             Active = company.Active;
+            Balance = company.CompanyBalance;
         }
     }
 }

@@ -76,26 +76,20 @@ namespace CompanyBroker_RestFull_Api.Controllers
 
 
         /// <summary>
-        /// Fetches one account based on a ID number, and returns through an model to not contain sensitive data like passwords
+        /// Fetches all accounts based on companyId, through a model to not contain sensitive data like passwords.
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<AccountResponse> Get(int id)
+        public async Task<IList<AccountResponse>> Get(int companyId)
         {
-            //-- sets an accountResponse
-            AccountResponse accountResponse;
             //-- Uses the CompanyBrokeraccountEntity to access the database
             using (var entitys = new CompanyBrokerAccountEntities())
             {
-                //-- fetches the account based on the ID the users has requested
-                var responseData = await entitys.CompanyAccounts.FirstOrDefaultAsync(c => c.UserId == id);
-                //-- Creates a new accountResponse and parsing the information to remove sensitive data
-                accountResponse = new AccountResponse(responseData);
+                //-- Fetches the account list
+                return (await entitys.CompanyAccounts.ToListAsync()).Select(a => new AccountResponse(a)).Where(c => c.CompanyId == companyId).ToList();
             }
-            //-- Returns the response
-            return accountResponse;
         }
+
 
         /// <summary>
         /// Fetches one account based on a ID number, and returns through an model to not contain sensitive data like passwords
