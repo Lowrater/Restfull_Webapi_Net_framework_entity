@@ -174,6 +174,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
             }
         }
 
+
         /// <summary>
         /// Fetches a single product type by ID
         /// </summary>

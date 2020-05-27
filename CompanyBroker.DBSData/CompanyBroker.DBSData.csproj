@@ -105,6 +105,24 @@
       <DependentUpon>CompanyResourcesModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceDescription.cs">
+      <DependentUpon>ResourceDescriptionModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceDescriptionModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResourceDescriptionModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceDescriptionModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResourceDescriptionModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceDescriptionModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResourceDescriptionModel.edmx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
@@ -130,6 +148,13 @@
       <DependentUpon>CompanyResourcesModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <EntityDeploy Include="ResourceDescriptionModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ResourceDescriptionModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ResourceDescriptionModel.edmx.diagram">
+      <DependentUpon>ResourceDescriptionModel.edmx</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -164,6 +189,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>CompanyResourcesModel.edmx</DependentUpon>
       <LastGenOutput>CompanyResourcesModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="ResourceDescriptionModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ResourceDescriptionModel.edmx</DependentUpon>
+      <LastGenOutput>ResourceDescriptionModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="ResourceDescriptionModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ResourceDescriptionModel.edmx</DependentUpon>
+      <LastGenOutput>ResourceDescriptionModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

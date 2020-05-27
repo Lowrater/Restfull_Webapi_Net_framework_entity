@@ -190,6 +190,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ResourceDescriptionController.cs" />
     <Compile Include="Controllers\ResourcesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -200,6 +201,7 @@
     <Compile Include="Models\CreateAccountRequest.cs" />
     <Compile Include="Models\CreateCompanyRequest.cs" />
     <Compile Include="Models\LoginRequest.cs" />
+    <Compile Include="Models\ResourceDescriptionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
