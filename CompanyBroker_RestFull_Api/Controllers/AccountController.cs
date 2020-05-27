@@ -69,8 +69,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
             //-- Uses the CompanyBrokeraccountEntity to access the database
             using (var entitys = new CompanyBrokerAccountEntities())
             {
-                //-- Fetches the account list
-                return (await entitys.CompanyAccounts.ToListAsync()).Select(a => new AccountResponse(a)).ToList();
+                return (await entitys.CompanyAccounts.ToListAsync()).Select(a => new AccountResponse(a)).ToList();               
             }
         }
 

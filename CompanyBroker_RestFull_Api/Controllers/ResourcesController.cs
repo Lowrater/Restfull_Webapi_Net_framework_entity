@@ -115,6 +115,34 @@ namespace CompanyBroker_RestFull_Api.Controllers
             return resourceList;
         }
 
+
+         /// <summary>
+         /// Creates a new resource to the resource table
+         /// </summary>
+         /// <param name="resource"></param>
+         /// <returns></returns>
+        [HttpPost]
+        public async Task<bool> Post(CompanyResource resource)
+        {
+            //-- Uses the CompanyBrokeraccountEntity to access the database
+            using (var entitys = new CompanyBrokerResourcesEntities())
+            {
+                //-- Verifys the content
+                if(resource != null)
+                {
+                    //-- Adds the content
+                    entitys.CompanyResources.Add(resource);
+                    await entitys.SaveChangesAsync();
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         /// <summary>
         /// Fetches all resources based by multiple CompanyId
         /// </summary>
