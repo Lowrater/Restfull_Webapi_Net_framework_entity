@@ -14,6 +14,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
     public class ResourceDescriptionController : ApiController
     {
 
+        #region Get methods
         /// <summary>
         /// Fetches the resource description based on the Resource ID
         /// </summary>
@@ -27,6 +28,11 @@ namespace CompanyBroker_RestFull_Api.Controllers
                 return await entity.ResourceDescriptions.FirstOrDefaultAsync(r => r.ResourceId == resourceId);
             }
         }
+
+        #endregion
+
+
+        #region Post methods
 
         /// <summary>
         /// Adds and description object (row) to the table
@@ -59,7 +65,10 @@ namespace CompanyBroker_RestFull_Api.Controllers
             }
         }
 
+        #endregion
 
+
+        #region Put Methods
         /// <summary>
         /// Updates an existing product description
         /// </summary>
@@ -89,7 +98,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
                 }
             }
         }
-
+        #endregion
 
 
     }

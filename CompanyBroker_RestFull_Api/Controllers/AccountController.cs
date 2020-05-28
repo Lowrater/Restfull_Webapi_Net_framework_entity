@@ -32,6 +32,8 @@ namespace CompanyBroker_RestFull_Api.Controllers
             return salt;
         }
 
+
+        #region Post Methods
         /// <summary>
         /// Verifys the login and returns a bool
         /// </summary>
@@ -59,59 +61,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
             return loginResult;
         }
 
-        /// <summary>
-        /// Fetches all accounts, through a model to not contain sensitive data like passwords.
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<IList<AccountResponse>> Get()
-        {
-            //-- Uses the CompanyBrokeraccountEntity to access the database
-            using (var entitys = new CompanyBrokerAccountEntities())
-            {
-                return (await entitys.CompanyAccounts.ToListAsync()).Select(a => new AccountResponse(a)).ToList();               
-            }
-        }
-
-
-        /// <summary>
-        /// Fetches all accounts based on companyId, through a model to not contain sensitive data like passwords.
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<IList<AccountResponse>> Get(int companyId)
-        {
-            //-- Uses the CompanyBrokeraccountEntity to access the database
-            using (var entitys = new CompanyBrokerAccountEntities())
-            {
-                //-- Fetches the account list
-                return (await entitys.CompanyAccounts.ToListAsync()).Select(a => new AccountResponse(a)).Where(c => c.CompanyId == companyId).ToList();
-            }
-        }
-
-
-        /// <summary>
-        /// Fetches one account based on a ID number, and returns through an model to not contain sensitive data like passwords
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<AccountResponse> Get(string userName)
-        {
-            //-- sets an accountResponse
-            AccountResponse accountResponse;
-            //-- Uses the CompanyBrokeraccountEntity to access the database
-            using (var entitys = new CompanyBrokerAccountEntities())
-            {
-                //-- fetches the account based on the ID the users has requested
-                var responseData = await entitys.CompanyAccounts.FirstOrDefaultAsync(c => c.Username == userName);
-                //-- Creates a new accountResponse and parsing the information to remove sensitive data
-                accountResponse = new AccountResponse(responseData);
-            }
-            //-- Returns the response
-            return accountResponse;
-        }
-
+       
 
         /// <summary>
         /// Creates an account from the content recieved from the user / application, to an existing company
@@ -154,5 +104,64 @@ namespace CompanyBroker_RestFull_Api.Controllers
             //-- Returns the user wished to be created
             return resultProcess;
         }
+
+        #endregion
+
+
+        #region Get Methods
+        /// <summary>
+        /// Fetches all accounts, through a model to not contain sensitive data like passwords.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IList<AccountResponse>> Get()
+        {
+            //-- Uses the CompanyBrokeraccountEntity to access the database
+            using (var entitys = new CompanyBrokerAccountEntities())
+            {
+                return (await entitys.CompanyAccounts.ToListAsync()).Select(a => new AccountResponse(a)).ToList();
+            }
+        }
+
+
+        /// <summary>
+        /// Fetches all accounts based on companyId, through a model to not contain sensitive data like passwords.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IList<AccountResponse>> Get(int companyId)
+        {
+            //-- Uses the CompanyBrokeraccountEntity to access the database
+            using (var entitys = new CompanyBrokerAccountEntities())
+            {
+                //-- Fetches the account list
+                return (await entitys.CompanyAccounts.ToListAsync()).Select(a => new AccountResponse(a)).Where(c => c.CompanyId == companyId).ToList();
+            }
+        }
+
+
+        /// <summary>
+        /// Fetches one account based on a ID number, and returns through an model to not contain sensitive data like passwords
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<AccountResponse> Get(string userName)
+        {
+            //-- sets an accountResponse
+            AccountResponse accountResponse;
+            //-- Uses the CompanyBrokeraccountEntity to access the database
+            using (var entitys = new CompanyBrokerAccountEntities())
+            {
+                //-- fetches the account based on the ID the users has requested
+                var responseData = await entitys.CompanyAccounts.FirstOrDefaultAsync(c => c.Username == userName);
+                //-- Creates a new accountResponse and parsing the information to remove sensitive data
+                accountResponse = new AccountResponse(responseData);
+            }
+            //-- Returns the response
+            return accountResponse;
+        }
+
+        #endregion
     }
 }

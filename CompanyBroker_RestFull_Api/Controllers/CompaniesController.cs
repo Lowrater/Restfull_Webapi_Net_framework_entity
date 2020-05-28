@@ -13,6 +13,8 @@ namespace CompanyBroker_RestFull_Api.Controllers
     /// </summary>
     public class CompaniesController : ApiController
     {
+
+        #region Get Methods
         /// <summary>
         /// Returns all companies from the database in a list, through a company model without the balance
         /// </summary>
@@ -82,6 +84,11 @@ namespace CompanyBroker_RestFull_Api.Controllers
             return companyResponse;
         }
 
+
+        #endregion
+
+
+        #region PostMethods
         /// <summary>
         /// Creates an company
         /// </summary>
@@ -118,6 +125,8 @@ namespace CompanyBroker_RestFull_Api.Controllers
             //-- returns the result
             return resultProcess;
         }
-             
+
+        #endregion
+
     }
 }
