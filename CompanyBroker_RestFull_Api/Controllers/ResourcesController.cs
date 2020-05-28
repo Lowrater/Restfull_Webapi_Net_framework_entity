@@ -144,6 +144,22 @@ namespace CompanyBroker_RestFull_Api.Controllers
         }
 
         /// <summary>
+        /// Gets an specific resource based on company ID and productname
+        /// </summary>
+        /// <param name="resource"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<CompanyResource> Get(int companyId, string productName)
+        {
+            //-- Uses the CompanyBrokeraccountEntity to access the database
+            using (var entitys = new CompanyBrokerResourcesEntities())
+            {
+                 return await entitys.CompanyResources.FirstOrDefaultAsync(a => a.CompanyId == companyId && a.ProductName.ToLower() == productName.ToLower());
+            }
+        }
+
+
+        /// <summary>
         /// Fetches all resources based by multiple CompanyId
         /// </summary>
         /// <returns></returns>
