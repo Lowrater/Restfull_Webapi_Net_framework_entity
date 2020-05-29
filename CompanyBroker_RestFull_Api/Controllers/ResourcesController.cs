@@ -258,5 +258,117 @@ namespace CompanyBroker_RestFull_Api.Controllers
 
 
         #endregion
+
+        #region Put methods
+
+
+        /// <summary>
+        /// Changes the price on an product
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <param name="resourceId"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<bool> ChangeResourcePrice(int companyId, int resourceId, int newPrice)
+        {
+            using (var entity = new CompanyBrokerResourcesEntities())
+            {
+                //-- Fetches the resource based on the informations
+                var resource = entity.CompanyResources.Where(c => c.CompanyId == companyId && c.ResourceId == resourceId).Single<CompanyResource>();
+
+                //- Checks if it's null
+                if (resource != null)
+                {
+                    //-- Changes the values
+                    resource.Price = newPrice;
+                    //-- tells the framework that we made changes
+                    entity.Entry(resource).State = EntityState.Modified;
+                    //-- Saves the changes
+                    await entity.SaveChangesAsync();
+                    //-- returns
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Inceases an product in the resource table
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <param name="resourceId"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<bool> IncreaseResourceAmount(int companyId, int resourceId)
+        {
+            using (var entity = new CompanyBrokerResourcesEntities())
+            {
+                //-- Fetches the resource based on the informations
+                var resource = entity.CompanyResources.Where(c => c.CompanyId == companyId && c.ResourceId == resourceId).Single<CompanyResource>();
+
+                //- Checks if it's null
+                if(resource != null)
+                {
+                    //-- Changes the values
+                    resource.Amount++;
+                    //-- tells the framework that we made changes
+                    entity.Entry(resource).State = EntityState.Modified;
+                    //-- Saves the changes
+                    await entity.SaveChangesAsync();
+                    //-- returns
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Decreases an product amount in the resource table
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <param name="resourceId"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<bool> DecreaseResourceAmount(int companyId, int resourceId)
+        {
+            using (var entity = new CompanyBrokerResourcesEntities())
+            {
+                //-- Fetches the resource based on the informations
+                var resource = entity.CompanyResources.Where(c => c.CompanyId == companyId && c.ResourceId == resourceId).Single<CompanyResource>();
+
+                //- Checks if it's null
+                if (resource != null)
+                {
+                    if(resource.Amount > 0)
+                    {
+                        //-- Changes the values
+                        resource.Amount--;
+                        //-- tells the framework that we made changes
+                        entity.Entry(resource).State = EntityState.Modified;
+                        //-- Saves the changes
+                        await entity.SaveChangesAsync();
+                        //-- returns
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        #endregion
+
+
     }
 }

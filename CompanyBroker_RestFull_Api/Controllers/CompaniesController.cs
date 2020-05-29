@@ -88,7 +88,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
         #endregion
 
 
-        #region PostMethods
+        #region Post Methods
         /// <summary>
         /// Creates an company
         /// </summary>
@@ -124,6 +124,77 @@ namespace CompanyBroker_RestFull_Api.Controllers
             }
             //-- returns the result
             return resultProcess;
+        }
+
+        #endregion
+
+
+        #region Put methods
+
+        /// <summary>
+        /// Updates the Company balance by an amount
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<bool> IncreaseCompanyBalance(int companyId, decimal amount)
+        {
+            using (var entity = new CompanyBrokerCompaniesEntities())
+            {
+                //-- Fetches an company based on the CompanyId 
+                var company = entity.Companies.Where(c => c.CompanyId == companyId).Single<Company>();
+
+                if(company != null)
+                {
+                    //-- Changes the values
+                    company.CompanyBalance = company.CompanyBalance + amount;
+                    //-- Tells the framework that there has been an change
+                    entity.Entry(company).State = EntityState.Modified;
+                    //-- Saves the changes
+                    await entity.SaveChangesAsync();
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+        }
+
+
+        /// <summary>
+        /// Decreases the companyBalance by an amount
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<bool> DecreaseCompanyBalance(int companyId, decimal amount)
+        {
+            using (var entity = new CompanyBrokerCompaniesEntities())
+            {
+                //-- Fetches an company based on the CompanyId 
+                var company = entity.Companies.Where(c => c.CompanyId == companyId).Single<Company>();
+
+                if (company.CompanyBalance > 0)
+                {
+                    //-- Changes the values
+                    company.CompanyBalance = company.CompanyBalance - amount;
+                    //-- Tells the framework that there has been an change
+                    entity.Entry(company).State = EntityState.Modified;
+                    //-- Saves the changes
+                    await entity.SaveChangesAsync();
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
 
         #endregion
