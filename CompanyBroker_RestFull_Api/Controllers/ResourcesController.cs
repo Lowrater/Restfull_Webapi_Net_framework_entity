@@ -296,77 +296,68 @@ namespace CompanyBroker_RestFull_Api.Controllers
         }
 
         /// <summary>
-        /// Inceases an product in the resource table
+        /// Inceases/decreases an product in the resource table
         /// </summary>
-        /// <param name="companyId"></param>
-        /// <param name="resourceId"></param>
+        /// <param name="resourceAmountChangeRequest"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<bool> IncreaseResourceAmount(int companyId, int resourceId)
+        public async Task<bool> ChangeCompanyResourceAmount(ResourceAmountChangeRequest resourceAmountChangeRequest)
         {
-            using (var entity = new CompanyBrokerResourcesEntities())
+            if(resourceAmountChangeRequest != null )
             {
-                //-- Fetches the resource based on the informations
-                var resource = entity.CompanyResources.Where(c => c.CompanyId == companyId && c.ResourceId == resourceId).Single<CompanyResource>();
+                var Companyid = resourceAmountChangeRequest.companyResource.CompanyId;
+                var resourceId = resourceAmountChangeRequest.companyResource.ResourceId;
 
-                //- Checks if it's null
-                if(resource != null)
+                using (var entity = new CompanyBrokerResourcesEntities())
                 {
-                    //-- Changes the values
-                    resource.Amount++;
-                    //-- tells the framework that we made changes
-                    entity.Entry(resource).State = EntityState.Modified;
-                    //-- Saves the changes
-                    await entity.SaveChangesAsync();
-                    //-- returns
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
+                    //-- Fetches the resource based on the informations
+                    var resource = entity.CompanyResources.Where(c => c.CompanyId == Companyid && c.ResourceId == resourceId).Single<CompanyResource>();
 
-        /// <summary>
-        /// Decreases an product amount in the resource table
-        /// </summary>
-        /// <param name="companyId"></param>
-        /// <param name="resourceId"></param>
-        /// <returns></returns>
-        [HttpPut]
-        public async Task<bool> DecreaseResourceAmount(int companyId, int resourceId)
-        {
-            using (var entity = new CompanyBrokerResourcesEntities())
-            {
-                //-- Fetches the resource based on the informations
-                var resource = entity.CompanyResources.Where(c => c.CompanyId == companyId && c.ResourceId == resourceId).Single<CompanyResource>();
-
-                //- Checks if it's null
-                if (resource != null)
-                {
-                    if(resource.Amount > 0)
+                    //- Checks if it's null
+                    if (resource != null)
                     {
-                        //-- Changes the values
-                        resource.Amount--;
-                        //-- tells the framework that we made changes
-                        entity.Entry(resource).State = EntityState.Modified;
-                        //-- Saves the changes
-                        await entity.SaveChangesAsync();
-                        //-- returns
-                        return true;
+                        if (resourceAmountChangeRequest.increase != false)
+                        {
+                            //-- Changes the values
+                            resource.Amount++;
+                            //-- tells the framework that we made changes
+                            entity.Entry(resource).State = EntityState.Modified;
+                            //-- Saves the changes
+                            await entity.SaveChangesAsync();
+                            //-- returns
+                            return true;
+                        }
+                        else
+                        {
+                            if(resource.Amount > 0)
+                            {
+                                //-- Changes the values
+                                resource.Amount--;
+                                //-- tells the framework that we made changes
+                                entity.Entry(resource).State = EntityState.Modified;
+                                //-- Saves the changes
+                                await entity.SaveChangesAsync();
+                                //-- returns
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
                     }
                     else
                     {
                         return false;
                     }
                 }
-                else
-                {
-                    return false;
-                }
+            }
+            else
+            {
+                return false;
             }
         }
+
         #endregion
 
 

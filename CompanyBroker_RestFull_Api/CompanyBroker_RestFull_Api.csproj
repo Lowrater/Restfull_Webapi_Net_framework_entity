@@ -197,10 +197,12 @@
     </Compile>
     <Compile Include="Models\AccountResponse.cs" />
     <Compile Include="Models\CollectionFilterRequest.cs" />
+    <Compile Include="Models\CompanyBalanceRequest.cs" />
     <Compile Include="Models\CompanyResponse.cs" />
     <Compile Include="Models\CreateAccountRequest.cs" />
     <Compile Include="Models\CreateCompanyRequest.cs" />
     <Compile Include="Models\LoginRequest.cs" />
+    <Compile Include="Models\ResourceAmountChangeRequest.cs" />
     <Compile Include="Models\ResourceDescriptionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

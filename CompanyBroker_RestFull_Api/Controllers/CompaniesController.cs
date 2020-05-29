@@ -134,66 +134,61 @@ namespace CompanyBroker_RestFull_Api.Controllers
         /// <summary>
         /// Updates the Company balance by an amount
         /// </summary>
-        /// <param name="companyId"></param>
-        /// <param name="amount"></param>
+        /// <param name="companyBalanceRequest"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<bool> IncreaseCompanyBalance(int companyId, decimal amount)
+        public async Task<bool> ChangeCompanyBalance(CompanyBalanceRequest companyBalanceRequest)
         {
-            using (var entity = new CompanyBrokerCompaniesEntities())
+            if(companyBalanceRequest != null)
             {
-                //-- Fetches an company based on the CompanyId 
-                var company = entity.Companies.Where(c => c.CompanyId == companyId).Single<Company>();
-
-                if(company != null)
+                using (var entity = new CompanyBrokerCompaniesEntities())
                 {
-                    //-- Changes the values
-                    company.CompanyBalance = company.CompanyBalance + amount;
-                    //-- Tells the framework that there has been an change
-                    entity.Entry(company).State = EntityState.Modified;
-                    //-- Saves the changes
-                    await entity.SaveChangesAsync();
+                    //-- Fetches an company based on the CompanyId 
+                    var company = entity.Companies.Where(c => c.CompanyId == companyBalanceRequest.companyId).Single<Company>();
 
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                    //-- Checks if the company is null
+                    if (company != null)
+                    {
+                        //-- Checks wheter or not we want to increase or decrease an balance
+                        if(companyBalanceRequest.increase != false)
+                        {
+                            //-- Changes the values
+                            company.CompanyBalance = company.CompanyBalance + companyBalanceRequest.priceAmount;
+                            //-- Tells the framework that there has been an change
+                            entity.Entry(company).State = EntityState.Modified;
+                            //-- Saves the changes
+                            await entity.SaveChangesAsync();
 
+                            return true;
+                        }
+                        else 
+                        {
+                            if (company.CompanyBalance > 0)
+                            {
+                                //-- Changes the values
+                                company.CompanyBalance = company.CompanyBalance - companyBalanceRequest.priceAmount;
+                                //-- Tells the framework that there has been an change
+                                entity.Entry(company).State = EntityState.Modified;
+                                //-- Saves the changes
+                                await entity.SaveChangesAsync();
+
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
             }
-        }
-
-
-        /// <summary>
-        /// Decreases the companyBalance by an amount
-        /// </summary>
-        /// <param name="companyId"></param>
-        /// <param name="amount"></param>
-        /// <returns></returns>
-        [HttpPut]
-        public async Task<bool> DecreaseCompanyBalance(int companyId, decimal amount)
-        {
-            using (var entity = new CompanyBrokerCompaniesEntities())
+            else
             {
-                //-- Fetches an company based on the CompanyId 
-                var company = entity.Companies.Where(c => c.CompanyId == companyId).Single<Company>();
-
-                if (company.CompanyBalance > 0)
-                {
-                    //-- Changes the values
-                    company.CompanyBalance = company.CompanyBalance - amount;
-                    //-- Tells the framework that there has been an change
-                    entity.Entry(company).State = EntityState.Modified;
-                    //-- Saves the changes
-                    await entity.SaveChangesAsync();
-
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+               return false;
             }
         }
 
