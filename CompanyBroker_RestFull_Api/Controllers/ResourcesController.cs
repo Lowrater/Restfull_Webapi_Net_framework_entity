@@ -1,13 +1,9 @@
 ﻿using CompanyBroker.DBSData;
-using CompanyBroker_RestFull_Api.Addons;
 using CompanyBroker_RestFull_Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -274,7 +270,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
             using (var entity = new CompanyBrokerResourcesEntities())
             {
                 //-- Fetches the resource based on the informations
-                var resource = entity.CompanyResources.Where(c => c.CompanyId == companyId && c.ResourceId == resourceId).Single<CompanyResource>();
+                var resource = entity.CompanyResources.Where(r => r.CompanyId == companyId && r.ResourceId == resourceId).Single<CompanyResource>();
 
                 //- Checks if it's null
                 if (resource != null)
