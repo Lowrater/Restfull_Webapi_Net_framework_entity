@@ -124,7 +124,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
         /// <returns></returns>
         [Route("api/GetProductAllTypes")]
         [HttpGet]
-        public async Task<List<string>> GetProductAllTypesAsync()
+        public async Task<IList<string>> GetProductAllTypesAsync()
         {
             ////-- opens an connection to the database
             using (var entitys = new CompanyBrokerResourcesEntities())
@@ -356,6 +356,36 @@ namespace CompanyBroker_RestFull_Api.Controllers
 
         #endregion
 
+        #region Delete methods
+        /// <summary>
+        /// Deletes an product in the database based on companyId, productname and resourceId
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <param name="productName"></param>
+        /// <param name="resourceId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public async Task<bool> Delete(int companyId, string productName, int resourceId)
+        {
+            using (var entity = new CompanyBrokerResourcesEntities())
+            {
+                var resource = await entity.CompanyResources.FirstOrDefaultAsync(r => r.CompanyId == companyId && r.ProductName.ToLower() == productName.ToLower() && r.ResourceId == resourceId);
+                
+                if(resource != null)
+                {
+                    entity.CompanyResources.Remove(resource);
+                    entity.Entry(resource).State = EntityState.Deleted;
+                    await entity.SaveChangesAsync();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+        }
+        #endregion
 
     }
 }
