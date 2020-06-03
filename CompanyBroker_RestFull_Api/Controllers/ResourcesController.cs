@@ -257,7 +257,6 @@ namespace CompanyBroker_RestFull_Api.Controllers
 
         #region Put methods
 
-
         /// <summary>
         /// Changes the price on an product
         /// </summary>
@@ -291,28 +290,29 @@ namespace CompanyBroker_RestFull_Api.Controllers
             }
         }
 
+
         /// <summary>
         /// Inceases/decreases an product in the resource table
         /// </summary>
-        /// <param name="resourceAmountChangeRequest"></param>
+        /// <param name="companyId"></param>
+        /// <param name="resourceId"></param>
+        /// <param name="increment"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<bool> ChangeCompanyResourceAmount(ResourceAmountChangeRequest resourceAmountChangeRequest)
+        public async Task<bool> ChangeCompanyResourceAmount(ResourceChangeAmountModelRequest resourceChangeModel)
         {
-            if(resourceAmountChangeRequest != null )
-            {
-                var Companyid = resourceAmountChangeRequest.companyResource.CompanyId;
-                var resourceId = resourceAmountChangeRequest.companyResource.ResourceId;
 
+            if(resourceChangeModel != null)
+            {
                 using (var entity = new CompanyBrokerResourcesEntities())
                 {
                     //-- Fetches the resource based on the informations
-                    var resource = entity.CompanyResources.Where(c => c.CompanyId == Companyid && c.ResourceId == resourceId).Single<CompanyResource>();
+                    var resource = entity.CompanyResources.Where(c => c.CompanyId == resourceChangeModel.companyId && c.ResourceId == resourceChangeModel.resourceId).Single<CompanyResource>();
 
                     //- Checks if it's null
                     if (resource != null)
                     {
-                        if (resourceAmountChangeRequest.increase != false)
+                        if (resourceChangeModel.IncreaseAmount != false)
                         {
                             //-- Changes the values
                             resource.Amount++;
@@ -325,7 +325,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
                         }
                         else
                         {
-                            if(resource.Amount > 0)
+                            if (resource.Amount > 0)
                             {
                                 //-- Changes the values
                                 resource.Amount--;

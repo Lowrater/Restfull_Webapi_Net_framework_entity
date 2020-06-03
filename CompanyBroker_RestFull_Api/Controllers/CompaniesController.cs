@@ -137,7 +137,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
         /// <param name="companyBalanceRequest"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<bool> ChangeCompanyBalance(CompanyBalanceRequest companyBalanceRequest)
+        public async Task<bool> ChangeCompanyBalance(CompanyChangeBalanceRequest companyBalanceRequest)
         {
             if(companyBalanceRequest != null)
             {
@@ -150,10 +150,10 @@ namespace CompanyBroker_RestFull_Api.Controllers
                     if (company != null)
                     {
                         //-- Checks wheter or not we want to increase or decrease an balance
-                        if(companyBalanceRequest.increase != false)
+                        if(companyBalanceRequest.increaseBalance != false)
                         {
                             //-- Changes the values
-                            company.CompanyBalance = company.CompanyBalance + companyBalanceRequest.priceAmount;
+                            company.CompanyBalance = company.CompanyBalance + companyBalanceRequest.price;
                             //-- Tells the framework that there has been an change
                             entity.Entry(company).State = EntityState.Modified;
                             //-- Saves the changes
@@ -166,7 +166,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
                             if (company.CompanyBalance > 0)
                             {
                                 //-- Changes the values
-                                company.CompanyBalance = company.CompanyBalance - companyBalanceRequest.priceAmount;
+                                company.CompanyBalance = company.CompanyBalance - companyBalanceRequest.price;
                                 //-- Tells the framework that there has been an change
                                 entity.Entry(company).State = EntityState.Modified;
                                 //-- Saves the changes

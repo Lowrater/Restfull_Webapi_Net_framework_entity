@@ -5,11 +5,11 @@ using System.Web;
 
 namespace CompanyBroker_RestFull_Api.Models
 {
-    public class CompanyBalanceRequest
+    public class CompanyChangeBalanceRequest
     {
         public int companyId { get; set; }
-        public decimal priceAmount { get; set; }
-        public bool increase { get; set; }
+        public decimal price { get; set; }
+        public bool increaseBalance { get; set; }
 
     }
 }
