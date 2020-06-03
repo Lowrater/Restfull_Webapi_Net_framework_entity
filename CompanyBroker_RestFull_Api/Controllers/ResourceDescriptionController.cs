@@ -55,7 +55,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
                     //-- adds it to the database
                     entity.ResourceDescriptions.Add(desc);
                     await entity.SaveChangesAsync();
-
+                    //-- 
                     return true;
                 }
                 else
@@ -83,14 +83,23 @@ namespace CompanyBroker_RestFull_Api.Controllers
                 {
                     //-- Finds the resource
                     var desc = entity.ResourceDescriptions.Where(a => a.ResourceId == description.ResourceId).Single<ResourceDescription>();
-                    //-- Changes the fetched resource object
-                    desc.Description = description.Description;
-                    //-- Tells the entity framework, that we made a change on the fetched object.
-                    entity.Entry(desc).State = EntityState.Modified;
-                    //-- Trys to apply the changes to the database
-                    await entity.SaveChangesAsync();
 
-                    return true;
+                    //-- Checks if it's null
+                    if(desc != null)
+                    {
+                        //-- Changes the fetched resource object
+                        desc.Description = description.Description;
+                        //-- Tells the entity framework, that we made a change on the fetched object.
+                        entity.Entry(desc).State = EntityState.Modified;
+                        //-- Trys to apply the changes to the database
+                        await entity.SaveChangesAsync();
+                        //---
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
