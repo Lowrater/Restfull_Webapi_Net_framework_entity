@@ -258,29 +258,30 @@ namespace CompanyBroker_RestFull_Api.Controllers
         #region Put methods
 
         /// <summary>
-        /// Changes the price on an product
+        /// Edits an resources values based on the edited resource requested
         /// </summary>
-        /// <param name="companyId"></param>
-        /// <param name="resourceId"></param>
+        /// <param name="companyResource"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<bool> ChangeResourcePrice(int companyId, int resourceId, int newPrice)
+        public async Task<bool> PUT(CompanyResource companyResource)
         {
             using (var entity = new CompanyBrokerResourcesEntities())
             {
                 //-- Fetches the resource based on the informations
-                var resource = entity.CompanyResources.Where(r => r.CompanyId == companyId && r.ResourceId == resourceId).Single<CompanyResource>();
-
+                var resource = entity.CompanyResources.Where(r => r.CompanyId == companyResource.CompanyId && r.ResourceId == companyResource.ResourceId).Single<CompanyResource>();
                 //- Checks if it's null
                 if (resource != null)
                 {
-                    //-- Changes the values
-                    resource.Price = newPrice;
+                    //-- Changes all the values
+                    resource.Price = companyResource.Price;
+                    resource.ProductName = companyResource.ProductName;
+                    resource.ProductType = companyResource.ProductType;
+                    resource.Amount = companyResource.Amount;
+                    resource.Active = companyResource.Active;
                     //-- tells the framework that we made changes
                     entity.Entry(resource).State = EntityState.Modified;
                     //-- Saves the changes
                     await entity.SaveChangesAsync();
-                    //-- returns
                     return true;
                 }
                 else
@@ -294,10 +295,9 @@ namespace CompanyBroker_RestFull_Api.Controllers
         /// <summary>
         /// Inceases/decreases an product in the resource table
         /// </summary>
-        /// <param name="companyId"></param>
-        /// <param name="resourceId"></param>
-        /// <param name="increment"></param>
+        /// <param name="resourceChangeModel"></param>
         /// <returns></returns>
+        [Route("api/ChangeCompanyResourceAmount")]
         [HttpPut]
         public async Task<bool> ChangeCompanyResourceAmount(ResourceChangeAmountModelRequest resourceChangeModel)
         {
