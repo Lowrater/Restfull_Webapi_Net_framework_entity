@@ -7,6 +7,7 @@
     <Property Name="DescriptionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ResourceId" Type="Int32" Nullable="false" />
     <Property Name="Description" Type="String" MaxLength="1500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CompanyId" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityContainer Name="CompanyBrokerResourceDescriptionEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="ResourceDescriptions" EntityType="Self.ResourceDescription" />

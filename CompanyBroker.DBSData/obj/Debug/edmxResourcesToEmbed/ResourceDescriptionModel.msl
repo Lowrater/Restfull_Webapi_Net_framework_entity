@@ -4,6 +4,7 @@
     <EntitySetMapping Name="ResourceDescriptions">
       <EntityTypeMapping TypeName="CompanyBrokerResourceDescriptionModel.ResourceDescription">
         <MappingFragment StoreEntitySet="ResourceDescriptions">
+          <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
           <ScalarProperty Name="DescriptionId" ColumnName="DescriptionId" />
           <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
           <ScalarProperty Name="Description" ColumnName="Description" />

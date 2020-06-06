@@ -4,20 +4,20 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CompanyBrokerResourceDescriptionModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CompanyBrokerResourceDescriptionModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ResourceDescriptions">
           <Key>
             <PropertyRef Name="DescriptionId" />
           </Key>
           <Property Name="DescriptionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="1500" Nullable="false" />
         </EntityType>
         <EntityContainer Name="CompanyBrokerResourceDescriptionModelStoreContainer">
           <EntitySet Name="ResourceDescriptions" EntityType="Self.ResourceDescriptions" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CompanyBrokerResourceDescriptionModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -28,6 +28,7 @@
           <Property Name="DescriptionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ResourceId" Type="Int32" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="1500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityContainer Name="CompanyBrokerResourceDescriptionEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ResourceDescriptions" EntityType="Self.ResourceDescription" />
@@ -41,6 +42,7 @@
           <EntitySetMapping Name="ResourceDescriptions">
             <EntityTypeMapping TypeName="CompanyBrokerResourceDescriptionModel.ResourceDescription">
               <MappingFragment StoreEntitySet="ResourceDescriptions">
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="DescriptionId" ColumnName="DescriptionId" />
                 <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
                 <ScalarProperty Name="Description" ColumnName="Description" />

@@ -6,6 +6,7 @@
     </Key>
     <Property Name="DescriptionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ResourceId" Type="int" Nullable="false" />
+    <Property Name="CompanyId" Type="int" Nullable="false" />
     <Property Name="Description" Type="nvarchar" MaxLength="1500" Nullable="false" />
   </EntityType>
   <EntityContainer Name="CompanyBrokerResourceDescriptionModelStoreContainer">

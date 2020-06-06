@@ -50,7 +50,8 @@ namespace CompanyBroker_RestFull_Api.Controllers
                     var desc = new ResourceDescription()
                     {
                         ResourceId = description.ResourceId,
-                        Description = description.Description
+                        Description = description.Description,
+                        CompanyId = description.CompanyId
                     };
                     //-- adds it to the database
                     entity.ResourceDescriptions.Add(desc);
@@ -107,6 +108,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
                 }
             }
         }
+
         #endregion
 
 

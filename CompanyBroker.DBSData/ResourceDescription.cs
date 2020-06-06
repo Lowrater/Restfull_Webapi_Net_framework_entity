@@ -17,5 +17,6 @@ namespace CompanyBroker.DBSData
         public int DescriptionId { get; set; }
         public int ResourceId { get; set; }
         public string Description { get; set; }
+        public int CompanyId { get; set; }
     }
 }
