@@ -32,7 +32,6 @@ namespace CompanyBroker_RestFull_Api.Controllers
             return salt;
         }
 
-
         #region Post Methods
         /// <summary>
         /// Verifys the login and returns a bool
@@ -41,10 +40,8 @@ namespace CompanyBroker_RestFull_Api.Controllers
         /// <returns></returns>
         [Route("api/VerifyLogin")]
         [HttpPost]
-        public async Task<bool> VerifyLogin(LoginRequest loginRequest)
+        public async Task<AccountResponse> VerifyLogin(LoginRequest loginRequest)
         {
-            //-- LoginResult to store result wheter or not the user exists
-            bool loginResult = false;
             //-- Uses the account entities to log on the database
             using (var entitys = new CompanyBrokerAccountEntities())
             {
@@ -54,11 +51,23 @@ namespace CompanyBroker_RestFull_Api.Controllers
                 if (user != null)
                 {
                     //-- sets the results depending on the password matching
-                    loginResult = GetHash(loginRequest.Password, user.PasswordSalt).SequenceEqual(user.PasswordHash);
+                   var loginResult = GetHash(loginRequest.Password, user.PasswordSalt).SequenceEqual(user.PasswordHash);
+
+                    if(loginResult != false)
+                    {
+                        return new AccountResponse(user);
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    return null;
                 }
             }
-            //-- returns the results
-            return loginResult;
+
         }
 
        
@@ -70,7 +79,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
         /// <returns></returns>
         [Route("api/CreateAccount")]
         [HttpPost]
-        public async Task<bool> CreateAccount(CreateAccountRequest accountRequest)
+        public async Task<bool> CreateAccount(AccountRequest accountRequest)
         {
             bool resultProcess = false;
             //-- generating the salt
@@ -107,7 +116,6 @@ namespace CompanyBroker_RestFull_Api.Controllers
 
         #endregion
 
-
         #region Get Methods
         /// <summary>
         /// Fetches all accounts, through a model to not contain sensitive data like passwords.
@@ -141,12 +149,12 @@ namespace CompanyBroker_RestFull_Api.Controllers
 
 
         /// <summary>
-        /// Fetches one account based on a ID number, and returns through an model to not contain sensitive data like passwords
+        /// Fetches one account based on username and company id and returns through an model to not contain sensitive data like passwords
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<AccountResponse> Get(string userName)
+        public async Task<AccountResponse> Get(string userName, int companyId)
         {
             //-- sets an accountResponse
             AccountResponse accountResponse;
@@ -154,12 +162,95 @@ namespace CompanyBroker_RestFull_Api.Controllers
             using (var entitys = new CompanyBrokerAccountEntities())
             {
                 //-- fetches the account based on the ID the users has requested
-                var responseData = await entitys.CompanyAccounts.FirstOrDefaultAsync(c => c.Username == userName);
+                var responseData = await entitys.CompanyAccounts.FirstOrDefaultAsync(c => c.Username == userName && c.CompanyId == companyId);
                 //-- Creates a new accountResponse and parsing the information to remove sensitive data
                 accountResponse = new AccountResponse(responseData);
             }
             //-- Returns the response
             return accountResponse;
+        }
+
+        #endregion
+
+        #region Put Methods
+
+        /// <summary>
+        /// Updates the user account informations
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<bool> PUT(AccountRequest AccountAPIModel)
+        {
+            //-- Getting access to the 
+            using (var entity = new CompanyBrokerAccountEntities())
+            {
+                //-- fetches the account
+                var responsData =  entity.CompanyAccounts.Where(a => a.CompanyId == AccountAPIModel.CompanyId && a.Username == AccountAPIModel.Username).Single<CompanyAccount>();
+                //-- checks the account
+                if(responsData != null)
+                {
+                    //-- sets the new informations
+                    responsData.Email = AccountAPIModel.Email;
+                    responsData.Active = AccountAPIModel.Active;
+                    responsData.Username = AccountAPIModel.Username;
+
+                    //-- checks if password has been changed
+                    if (!string.IsNullOrEmpty(AccountAPIModel.Password))
+                    {
+                        //-- creates new salt
+                        var newSalt = GenerateSalt(32);
+                        //-- sets new password informations
+                        responsData.PasswordHash = GetHash(AccountAPIModel.Password, newSalt);
+                        responsData.PasswordSalt = newSalt;
+                    }
+                    //-- Sets the data entry and sate
+                    entity.Entry(responsData).State = EntityState.Modified;
+                    //-- saves the data
+                    await entity.SaveChangesAsync();
+                    //-- returns
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Delete methods
+
+        /// <summary>
+        /// Deletes an account based on company id and username
+        /// </summary>
+        /// <param name="AccountRequest"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public async Task<bool> Delete(int companyId, string username)
+        {
+            //-- Connects to the database
+            using (var entity = new CompanyBrokerAccountEntities())
+            {
+                //-- fetches an account based on the informations
+                var account = entity.CompanyAccounts.Where(a => a.CompanyId == companyId && a.Username == username).Single<CompanyAccount>();
+                //-- checks the account
+                if(account != null)
+                {
+                    //-- removes the account
+                    entity.CompanyAccounts.Remove(account);
+                    //-- informs of the state
+                    entity.Entry(account).State = EntityState.Deleted;
+                    //-- saves the state
+                    await entity.SaveChangesAsync();
+                    //-- return
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
 
         #endregion

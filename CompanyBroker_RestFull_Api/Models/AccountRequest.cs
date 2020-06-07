@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CompanyBroker_RestFull_Api.Models
 {
-    public class CreateAccountRequest
+    public class AccountRequest
     {
         public int CompanyId { get; set; }
         public string Username { get; set; }
