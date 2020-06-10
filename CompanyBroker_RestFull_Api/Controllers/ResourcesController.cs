@@ -155,7 +155,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
             var searchWords = collectionFilterRequest.SearchWord;
             var LowestPrice = collectionFilterRequest.LowestPriceChoice;
             var HigestPirce = collectionFilterRequest.HigestPriceChoice;
-            var BulkBuy = collectionFilterRequest.BulkChoice;
+            var ResourceIsActive = collectionFilterRequest.ResourceActive;
             var PartnersOnly = collectionFilterRequest.Partners_OnlyChoice;
 
             //-- Uses the CompanyBrokeraccountEntity to access the database
@@ -188,6 +188,11 @@ namespace CompanyBroker_RestFull_Api.Controllers
                 if (HigestPirce != 0)
                 {
                     results = results.Where(r => HigestPirce > r.Price);
+                }
+
+                if(ResourceIsActive != false)
+                {
+                    results = results.Where(r => r.Active == ResourceIsActive);
                 }
 
                 //-- word filtering
