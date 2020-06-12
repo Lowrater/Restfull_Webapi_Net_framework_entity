@@ -33,44 +33,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
         }
 
         #region Post Methods
-        /// <summary>
-        /// Verifys the login and returns a bool
-        /// </summary>
-        /// <param name="loginRequest"></param>
-        /// <returns></returns>
-        [Route("api/VerifyLogin")]
-        [HttpPost]
-        public async Task<AccountResponse> VerifyLogin(LoginRequest loginRequest)
-        {
-            //-- Uses the account entities to log on the database
-            using (var entitys = new CompanyBrokerAccountEntities())
-            {
-                //-- fetches the user
-                var user = await entitys.CompanyAccounts.Where(a => a.Username == loginRequest.Username).SingleOrDefaultAsync();
-                //-- checks the response of it exists
-                if (user != null)
-                {
-                    //-- sets the results depending on the password matching
-                   var loginResult = GetHash(loginRequest.Password, user.PasswordSalt).SequenceEqual(user.PasswordHash);
 
-                    if(loginResult != false)
-                    {
-                        return new AccountResponse(user);
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                else
-                {
-                    return null;
-                }
-            }
-
-        }
-
-       
 
         /// <summary>
         /// Creates an account from the content recieved from the user / application, to an existing company
@@ -117,6 +80,54 @@ namespace CompanyBroker_RestFull_Api.Controllers
         #endregion
 
         #region Get Methods
+
+        /// <summary>
+        /// Verifys login [FromUri] for complex parameters
+        /// </summary>
+        /// <param name="loginRequest"></param>
+        /// <returns></returns>
+        [Route("api/VerifyLogin")]
+        [HttpGet]
+        public async Task<AccountResponse> VerifyLogin([FromUri] LoginRequest loginRequest)
+        {
+            if (loginRequest != null)
+            {
+                var username = ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(loginRequest.Username));
+                var password = ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(loginRequest.Password));
+
+                //-- Uses the account entities to log on the database
+                using (var entitys = new CompanyBrokerAccountEntities())
+                {
+                    //-- fetches the user
+                    var user = await entitys.CompanyAccounts.Where(a => a.Username == username).SingleOrDefaultAsync();
+                    //-- checks the response of it exists
+                    if (user != null)
+                    {
+                        //-- sets the results depending on the password matching
+                        var loginResult = GetHash(password, user.PasswordSalt).SequenceEqual(user.PasswordHash);
+
+                        if (loginResult != false)
+                        {
+                            return new AccountResponse(user);
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
         /// <summary>
         /// Fetches all accounts, through a model to not contain sensitive data like passwords.
         /// </summary>

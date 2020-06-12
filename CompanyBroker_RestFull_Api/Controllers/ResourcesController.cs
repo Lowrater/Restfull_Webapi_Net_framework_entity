@@ -1,14 +1,19 @@
 ﻿using CompanyBroker.DBSData;
 using CompanyBroker_RestFull_Api.Models;
+using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace CompanyBroker_RestFull_Api.Controllers
 {
+    //-- 
     public class ResourcesController : ApiController
     {
 
@@ -136,6 +141,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
         #endregion
 
         #region Post methods
+
 
         /// <summary>
         /// Fetches all resources based on filters
@@ -387,7 +393,6 @@ namespace CompanyBroker_RestFull_Api.Controllers
                 {
                     return false;
                 }
-
             }
         }
         #endregion
