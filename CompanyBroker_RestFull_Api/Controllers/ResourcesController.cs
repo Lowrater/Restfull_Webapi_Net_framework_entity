@@ -13,7 +13,9 @@ using System.Web.Http;
 
 namespace CompanyBroker_RestFull_Api.Controllers
 {
-    //-- 
+    /// <summary>
+    /// Resource controller containing all methods regarding resources
+    /// </summary>
     public class ResourcesController : ApiController
     {
 
@@ -32,6 +34,85 @@ namespace CompanyBroker_RestFull_Api.Controllers
                 return await entitys.CompanyResources.ToListAsync();
             }
         }
+
+        /// <summary>
+        /// Fetches all resources based on filters
+        /// </summary>
+        /// <param name="collectionFilterRequest"></param>
+        /// <returns></returns>
+        [Route("api/GetResourcesByListFilters")]
+        [HttpGet]
+        public async Task<IList<CompanyResource>> GetResourcesByListFilters([FromUri] CollectionFilterRequest collectionFilterRequest)
+        {
+            //-- Result Url = localhost:50133/api/GetResourcesByListFilters?CompanyChoices[0]=1&CompanyChoices[1]=2&ProductTypeChoices[0]=Martin
+
+            //-- The new resource list
+            var resourceList = new List<CompanyResource>();
+
+            //-- Values from the CollectionFilterRequest - Null condition operator if null
+            var productNames = collectionFilterRequest?.ProductNameChoices ?? new string[] { };
+            var productTypes = collectionFilterRequest?.ProductTypeChoices ?? new string[] { };
+            var companyIds = collectionFilterRequest?.CompanyChoices ?? new int[] { };
+            var searchWords = collectionFilterRequest?.SearchWord ?? string.Empty;
+            var LowestPrice = collectionFilterRequest?.LowestPriceChoice ?? 0;
+            var HigestPirce = collectionFilterRequest?.HigestPriceChoice ?? 0;
+            var ResourceIsActive = collectionFilterRequest?.ResourceActive ?? false;
+            var PartnersOnly = collectionFilterRequest?.Partners_OnlyChoice ?? false;
+
+            //-- Uses the CompanyBrokeraccountEntity to access the database
+            using (var entitys = new CompanyBrokerResourcesEntities())
+            {
+                //-- Fetching the results. - As queryAble, lets the database struggle with the filtering than the application
+                var results = entitys.CompanyResources.AsQueryable();
+
+                //-- Filtering the list depending on the inputs from the collectionListRequest, and checking if they have any value
+                if (productNames.Any())
+                {
+                    results = results.Where(r => productNames.Contains(r.ProductName));
+                }
+
+                if (productTypes.Any())
+                {
+                    results = results.Where(r => productTypes.Contains(r.ProductType));
+                }
+
+                if (companyIds.Any())
+                {
+                    results = results.Where(r => companyIds.Contains(r.CompanyId));
+                }
+
+                if (LowestPrice != 0)
+                {
+                    results = results.Where(r => LowestPrice < r.Price);
+                }
+
+                if (HigestPirce != 0)
+                {
+                    results = results.Where(r => HigestPirce > r.Price);
+                }
+
+                if (ResourceIsActive != false)
+                {
+                    results = results.Where(r => r.Active == ResourceIsActive);
+                }
+
+                //-- word filtering
+                if (!string.IsNullOrWhiteSpace(searchWords))
+                {
+                    //-- Splitting the word by spaces, into array for propper filtering
+                    var Words = searchWords.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    //-- Filtering the results based on the array of words
+                    results = results.Where(r => Words.Any(s => r.ProductName.ToLower().Contains(s) || r.ProductType.ToLower().Contains(s)));
+                }
+
+                //-- Sets the resource list
+                resourceList = await results.ToListAsync();
+
+                //-- returns it
+                return resourceList;
+            }
+        }
+
 
         /// <summary>
         /// Fetches all resources based by one CompanyId
@@ -143,86 +224,14 @@ namespace CompanyBroker_RestFull_Api.Controllers
         #region Post methods
 
 
+       
+
+
         /// <summary>
-        /// Fetches all resources based on filters
+        /// Creates a new resource to the resource table
         /// </summary>
-        /// <param name="collectionFilterRequest"></param>
+        /// <param name="resource"></param>
         /// <returns></returns>
-        [Route("api/GetResourcesByListFilters")]
-        [HttpPost]
-        public async Task<IList<CompanyResource>> GetResourcesByListFilters(CollectionFilterRequest collectionFilterRequest)
-        {
-            //-- The new resource list
-            var resourceList = new List<CompanyResource>();
-            //-- Values from the CollectionFilterRequest
-            var productNames = collectionFilterRequest.ProductNameChoices;
-            var productTypes = collectionFilterRequest.ProductTypeChoices;
-            var companyIds = collectionFilterRequest.CompanyChoices;
-            var searchWords = collectionFilterRequest.SearchWord;
-            var LowestPrice = collectionFilterRequest.LowestPriceChoice;
-            var HigestPirce = collectionFilterRequest.HigestPriceChoice;
-            var ResourceIsActive = collectionFilterRequest.ResourceActive;
-            var PartnersOnly = collectionFilterRequest.Partners_OnlyChoice;
-
-            //-- Uses the CompanyBrokeraccountEntity to access the database
-            using (var entitys = new CompanyBrokerResourcesEntities())
-            {
-                //-- Fetching the results. - As queryAble, lets the database struggle with the filtering than the application
-                var results = entitys.CompanyResources.AsQueryable();
-
-                //-- Filtering the list depending on the inputs from the collectionListRequest, and checking if they have any value
-                if (productNames.Any())
-                {
-                    results = results.Where(r => productNames.Contains(r.ProductName));
-                }
-
-                if (productTypes.Any())
-                {
-                    results = results.Where(r => productTypes.Contains(r.ProductType));
-                }
-
-                if (companyIds.Any())
-                {
-                    results = results.Where(r => companyIds.Contains(r.CompanyId));
-                }
-
-                if (LowestPrice != 0)
-                {
-                    results = results.Where(r => LowestPrice < r.Price);
-                }
-
-                if (HigestPirce != 0)
-                {
-                    results = results.Where(r => HigestPirce > r.Price);
-                }
-
-                if(ResourceIsActive != false)
-                {
-                    results = results.Where(r => r.Active == ResourceIsActive);
-                }
-
-                //-- word filtering
-                if (!string.IsNullOrWhiteSpace(searchWords))
-                {
-                    //-- Splitting the word by spaces, into array for propper filtering
-                    var Words = searchWords.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    //-- Filtering the results based on the array of words
-                    results = results.Where(r => Words.Any(s => r.ProductName.ToLower().Contains(s) || r.ProductType.ToLower().Contains(s)));
-                }
-
-                resourceList = await results.ToListAsync();
-            }
-
-            //-- return the filtered list
-            return resourceList;
-        }
-
-
-         /// <summary>
-         /// Creates a new resource to the resource table
-         /// </summary>
-         /// <param name="resource"></param>
-         /// <returns></returns>
         [HttpPost]
         public async Task<bool> Post(CompanyResource resource)
         {
@@ -245,12 +254,12 @@ namespace CompanyBroker_RestFull_Api.Controllers
             }
         }
 
-  
+
 
         /// <summary>
         /// Fetches all product names based on product type. Needs an List of product types
         /// </summary>
-        /// <param name="productname"></param>
+        /// <param name="productTypes"></param>
         /// <returns></returns>
         [Route("api/GetAllProductNamesByTypes")]
         [HttpPost]

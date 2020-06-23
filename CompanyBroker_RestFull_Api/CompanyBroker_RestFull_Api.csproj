@@ -201,7 +201,6 @@
     <Compile Include="Models\CompanyResponse.cs" />
     <Compile Include="Models\AccountRequest.cs" />
     <Compile Include="Models\CreateCompanyRequest.cs" />
-    <Compile Include="Models\LoginRequest.cs" />
     <Compile Include="Models\ResourceChangeAmountModelRequest.cs" />
     <Compile Include="Models\ResourceDescriptionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

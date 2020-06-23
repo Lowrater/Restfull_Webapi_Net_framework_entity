@@ -1,5 +1,6 @@
 ﻿using CompanyBroker.DBSData;
 using CompanyBroker_RestFull_Api.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -48,7 +49,7 @@ namespace CompanyBroker_RestFull_Api.Controllers
             //-- generating the salt
             var salt = GenerateSalt(32);
 
-            if(accountRequest != null)
+            if (accountRequest != null)
             {
                 //-- Creates the new account
                 var user = new CompanyAccount
@@ -81,30 +82,35 @@ namespace CompanyBroker_RestFull_Api.Controllers
 
         #region Get Methods
 
+
         /// <summary>
-        /// Verifys login [FromUri] for complex parameters
+        /// Verifys login - in JSon formattet string
         /// </summary>
         /// <param name="loginRequest"></param>
         /// <returns></returns>
         [Route("api/VerifyLogin")]
         [HttpGet]
-        public async Task<AccountResponse> VerifyLogin([FromUri] LoginRequest loginRequest)
+        public async Task<AccountResponse> VerifyLogin(string Username, string Password)
         {
-            if (loginRequest != null)
+            if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password))
             {
-                var username = ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(loginRequest.Username));
-                var password = ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(loginRequest.Password));
+                //-- Deserialize the JSon string
+                var _usernameJS = JsonConvert.DeserializeObject<string>(Username);
+                var _passwordJS = JsonConvert.DeserializeObject<string>(Password);
+                //-- Decode the encoding base64 string
+                var _username = ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(_usernameJS));
+                var _password = ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(_passwordJS));
 
                 //-- Uses the account entities to log on the database
                 using (var entitys = new CompanyBrokerAccountEntities())
                 {
                     //-- fetches the user
-                    var user = await entitys.CompanyAccounts.Where(a => a.Username == username).SingleOrDefaultAsync();
+                    var user = await entitys.CompanyAccounts.Where(a => a.Username == _username).SingleOrDefaultAsync();
                     //-- checks the response of it exists
                     if (user != null)
                     {
                         //-- sets the results depending on the password matching
-                        var loginResult = GetHash(password, user.PasswordSalt).SequenceEqual(user.PasswordHash);
+                        var loginResult = GetHash(_password, user.PasswordSalt).SequenceEqual(user.PasswordHash);
 
                         if (loginResult != false)
                         {
@@ -126,7 +132,6 @@ namespace CompanyBroker_RestFull_Api.Controllers
                 return null;
             }
         }
-
 
         /// <summary>
         /// Fetches all accounts, through a model to not contain sensitive data like passwords.
