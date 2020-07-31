@@ -163,6 +163,22 @@ namespace CompanyBroker_RestFull_Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets an account based on username
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<AccountResponse> Get(string username)
+        {
+            //-- Uses the CompanyBrokeraccountEntity to access the database
+            using (var entitys = new CompanyBrokerAccountEntities())
+            {
+                //-- Fetches the account list
+                var responseData = await entitys.CompanyAccounts.FirstOrDefaultAsync(a => a.Username == username);
+                return new AccountResponse(responseData);
+            }
+        }
 
         /// <summary>
         /// Fetches one account based on username and company id and returns through an model to not contain sensitive data like passwords
@@ -172,18 +188,16 @@ namespace CompanyBroker_RestFull_Api.Controllers
         [HttpGet]
         public async Task<AccountResponse> Get(string userName, int companyId)
         {
-            //-- sets an accountResponse
-            AccountResponse accountResponse;
+
             //-- Uses the CompanyBrokeraccountEntity to access the database
             using (var entitys = new CompanyBrokerAccountEntities())
             {
                 //-- fetches the account based on the ID the users has requested
                 var responseData = await entitys.CompanyAccounts.FirstOrDefaultAsync(c => c.Username == userName && c.CompanyId == companyId);
                 //-- Creates a new accountResponse and parsing the information to remove sensitive data
-                accountResponse = new AccountResponse(responseData);
+                //-- Returns the response
+                return new AccountResponse(responseData);
             }
-            //-- Returns the response
-            return accountResponse;
         }
 
         #endregion

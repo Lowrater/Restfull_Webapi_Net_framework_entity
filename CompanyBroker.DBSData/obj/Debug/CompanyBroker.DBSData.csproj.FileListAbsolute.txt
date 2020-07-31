@@ -19,3 +19,4 @@ C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\Compa
 C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker.DBSData\obj\Debug\CompanyBroker.DBSData.csproj.CopyComplete
 C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker.DBSData\obj\Debug\CompanyBroker.DBSData.dll
 C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker.DBSData\obj\Debug\CompanyBroker.DBSData.pdb
+C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker.DBSData\obj\Debug\CompanyBroker.DBSData.csproj.CoreCompileInputs.cache

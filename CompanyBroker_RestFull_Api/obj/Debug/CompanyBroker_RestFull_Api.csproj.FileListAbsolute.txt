@@ -202,3 +202,4 @@ C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\Compa
 C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker_RestFull_Api\obj\Debug\CompanyBroker_RestFull_Api.csproj.CopyComplete
 C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker_RestFull_Api\obj\Debug\CompanyBroker_RestFull_Api.dll
 C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker_RestFull_Api\obj\Debug\CompanyBroker_RestFull_Api.pdb
+C:\Users\PC\source\repos\Git projects\Restfull_Webapi_Net_framework_entity\CompanyBroker_RestFull_Api\obj\Debug\CompanyBroker_RestFull_Api.csproj.CoreCompileInputs.cache
