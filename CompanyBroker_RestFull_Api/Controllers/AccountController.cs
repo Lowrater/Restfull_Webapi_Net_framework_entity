@@ -176,7 +176,16 @@ namespace CompanyBroker_RestFull_Api.Controllers
             {
                 //-- Fetches the account list
                 var responseData = await entitys.CompanyAccounts.FirstOrDefaultAsync(a => a.Username == username);
-                return new AccountResponse(responseData);
+
+                //-- Returns the results
+                if (responseData != null)
+                {
+                    return new AccountResponse(responseData);
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
@@ -188,15 +197,21 @@ namespace CompanyBroker_RestFull_Api.Controllers
         [HttpGet]
         public async Task<AccountResponse> Get(string userName, int companyId)
         {
-
             //-- Uses the CompanyBrokeraccountEntity to access the database
             using (var entitys = new CompanyBrokerAccountEntities())
             {
                 //-- fetches the account based on the ID the users has requested
                 var responseData = await entitys.CompanyAccounts.FirstOrDefaultAsync(c => c.Username == userName && c.CompanyId == companyId);
                 //-- Creates a new accountResponse and parsing the information to remove sensitive data
-                //-- Returns the response
-                return new AccountResponse(responseData);
+                //-- Returns the results
+                if (responseData != null)
+                {
+                    return new AccountResponse(responseData);
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 

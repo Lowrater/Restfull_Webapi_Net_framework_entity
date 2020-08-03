@@ -48,18 +48,22 @@ namespace CompanyBroker_RestFull_Api.Controllers
         [HttpGet]
         public async Task<CompanyResponse> Get(int id)
         {
-            //-- sets an CompanyResponse
-            CompanyResponse companyResponse;
             //-- Uses the CompanyBrokerCompaniesEntities to connect to the database
             using (var entitys = new CompanyBrokerCompaniesEntities())
             {
                 //-- Fetches an company based on the Id user has entered
                 var company = await entitys.Companies.FirstOrDefaultAsync(c => c.CompanyId == id);
                 //-- creates the new companyResponse based on the information fetched
-                companyResponse = new CompanyResponse(company);
-            }
-            //-- Returns the results
-            return companyResponse;
+                //-- Returns the results
+                if (company != null)
+                {
+                    return new CompanyResponse(company);
+                }
+                else
+                {
+                    return null;
+                }
+            }  
         }
 
         /// <summary>
@@ -70,18 +74,23 @@ namespace CompanyBroker_RestFull_Api.Controllers
         [HttpGet]
         public async Task<CompanyResponse> Get(string companyName)
         {
-            //-- sets an CompanyResponse
-            CompanyResponse companyResponse;
             //-- Uses the CompanyBrokerCompaniesEntities to connect to the database
             using (var entitys = new CompanyBrokerCompaniesEntities())
             {
                 //-- Fetches an company based on the Id user has entered
                 var company = await entitys.Companies.FirstOrDefaultAsync(c => c.CompanyName == companyName);
                 //-- creates the new companyResponse based on the information fetched
-                companyResponse = new CompanyResponse(company);
+
+                //-- Returns the results
+                if (company != null)
+                {
+                    return new CompanyResponse(company);
+                }
+                else
+                {
+                    return null;
+                }
             }
-            //-- Returns the results
-            return companyResponse;
         }
 
 
